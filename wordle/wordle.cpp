@@ -1,39 +1,40 @@
-#include <iostream>
+#include <iostream> 
+#include <string>
 
-int main() {
-    std::string word="world";
-    std::string userCorrect[5]={"-","-","-","-","-"};
-    std::string userGuess="";
-    int tries=0;
+int main(){
+    std::string word = "apple";
+    std::string guess;
+    std::string correctly_guessed = "-----";
+    int tries = 0;
 
-    while (userGuess != word){
-        tries++;
+    while (guess != word){
         std::cout << "Enter your guess: ";
-        std::cin >> userGuess;
-        if(userGuess==word){
-            std::cout << "You won!!\n";
-            std::cout << "It took you "<<tries<<" tries";
+        std::getline(std::cin, guess);
+
+        // if guess = word
+        if (guess == word){
             break;
         }
-        for(int i=0;i<userGuess.length();i++){
-            if(userGuess[i]==word[i]){
-                userCorrect[i]=userGuess[i];
+        else{
+            // checking for all the letters that are in the same position as in the correct word's
+            for (int i=0; i<word.length(); i++){
+                if (guess[i] == word[i]){
+                    correctly_guessed[i] = word[i];
+                }
             }
-            else if(word.find(userGuess[i]) != std::string::npos){
-                std::cout << "Letter "<<userGuess[i]<<" is somewhere else\n";
+            
+            // checking for all letters that are within the correct word but in a different index (not creating a separate for loop would result in duplicates when there are 2 occurences of 1 letter)
+            for (int i=0; i<word.length(); i++){
+                if (word.find(guess[i]) != std::string::npos && correctly_guessed.find(guess[i]) == std::string::npos){
+                    std::cout << "Letter " << guess[i] << " is somewhere else within the word" << std::endl;
+                }
             }
         }
-        //printing letters that the user got correct
-            for(int i=0;i<word.length();i++){
-                if(i==0){
-                    std::cout << "[";
-                }
-                std::cout << userCorrect[i];
-                if(i==word.length()-1){
-                    std::cout << "]\n";
-                }
-            }
+        std::cout << correctly_guessed << std::endl;
+        tries ++;
+        
     }
-
+    std::cout << "You won!!" << std::endl;
+    std::cout << "It took you " << tries << " tries";
     return 0;
 }
