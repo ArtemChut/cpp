@@ -2,7 +2,7 @@
 #include <string>
 
 int main(){
-    std::string word = "apple";
+    std::string word = "world";
     std::string guess;
     std::string correctly_guessed = "-----";
     int tries = 0;
