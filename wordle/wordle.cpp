@@ -1,5 +1,6 @@
 #include <iostream> 
-#include <string>
+#include <iterator>
+#include <ctime> // works like random
 
 int letterCount(std::string word, char letter){
     int count = 0;
@@ -9,17 +10,23 @@ int letterCount(std::string word, char letter){
     return count;
 }
 
+std::string words[] = {"apple", "world", "trick", "adore", "prize"};
 int main(){
-    std::string word = "apple";
+    srand(time(0));
+    std::string word = words[rand() % std::size(words)];
     std::string guess;
     std::string correctly_guessed = "-----";
     int tries = 1;
 
 
-
+    std::cout << "Length of a word must be " << word.length() << " characters long \n";
+    std::cout << "------------------------------------------ \n";
     while (guess != word){
+        input: // program jumps here if input length is incorrect
         std::cout << "Enter your guess: ";
-        std::getline(std::cin, guess);
+        std::cin >> guess;
+
+        if (guess.length() != word.length()) goto input;
 
         // if guess = word
         if (guess == word){
@@ -38,8 +45,8 @@ int main(){
                 if (word.find(guess[i]) != std::string::npos && word[i] != guess[i]){
                     bool sameLetterCountNotUsedUp = letterCount(correctly_guessed,guess[i]) < letterCount(word,guess[i]);
 
-                    if (sameLetterCountNotUsedUp){
-                        std::cout << "Letter " << guess[i] << " is somewhere else within the word" << std::endl;
+                    if (sameLetterCountNotUsedUp && letterCount(guess.substr(0,i+1),guess[i]) <= letterCount(word,guess[i])){
+                        std::cout << "Letter " << guess[i] << " is somewhere else within the word \n";
                     }
                 }
             }
@@ -48,7 +55,7 @@ int main(){
         tries++;
         
     }
-    std::cout << "You won!!" << std::endl;
+    std::cout << "You won!! \n";
     std::cout << "It took you " << tries << " tries";
     return 0;
 }
