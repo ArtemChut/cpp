@@ -1,5 +1,8 @@
 #include <iostream> 
 #include <iterator>
+#include <fstream>
+#include <vector>
+#include <string>
 #include <ctime> // works like random
 
 int letterCount(std::string word, char letter){
@@ -10,22 +13,44 @@ int letterCount(std::string word, char letter){
     return count;
 }
 
-std::string words[] = {"apple", "world", "trick", "adore", "prize"};
 int main(){
+    //opening a file with 5 letter words inside  
+    std::ifstream file("5letterWords.txt");
+
+    if (!file)
+    {
+        std::cout << "File couldn't be located";
+        return 1;
+    }
+
+    // saving 5 letter words to a vector
+    std::vector<std::string> words;
+    std::string temp;
+
+    while (std::getline(file, temp))
+    {
+        words.push_back(temp);
+    }
+    file.close();
+
+
     srand(time(0));
-    std::string word = words[rand() % std::size(words)];
+
+    std::string word = words[rand() % words.size()];
     std::string guess;
     std::string correctly_guessed = "-----";
     int tries = 1;
 
 
     std::cout << "Length of a word must be " << word.length() << " characters long \n";
-    std::cout << "------------------------------------------ \n";
+    std::cout << "Enter 'stop' if you want to give up \n";
+    std::cout << "|----------------------------------------| \n";
     while (guess != word){
         input: // program jumps here if input length is incorrect
         std::cout << "Enter your guess: ";
         std::cin >> guess;
 
+        if (guess == "stop") goto givenUp;
         if (guess.length() != word.length()) goto input;
 
         // if guess = word
@@ -57,5 +82,9 @@ int main(){
     }
     std::cout << "You won!! \n";
     std::cout << "It took you " << tries << " tries";
+    return 0;
+
+    givenUp:
+    std::cout << "The word was '" << word << "'";
     return 0;
 }
