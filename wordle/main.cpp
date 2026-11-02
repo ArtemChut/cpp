@@ -70,7 +70,8 @@ int main(){
                 if (word.find(guess[i]) != std::string::npos && word[i] != guess[i]){
                     bool sameLetterCountNotUsedUp = letterCount(correctly_guessed,guess[i]) < letterCount(word,guess[i]);
 
-                    if (sameLetterCountNotUsedUp && letterCount(guess.substr(0,i+1),guess[i]) <= letterCount(word,guess[i])){
+                    int totalSameLetter = letterCount(guess.substr(0,i+1),guess[i]) + letterCount(correctly_guessed,guess[i]);
+                    if (sameLetterCountNotUsedUp && totalSameLetter <= letterCount(word,guess[i])){
                         std::cout << "Letter " << guess[i] << " is somewhere else within the word \n";
                     }
                 }
